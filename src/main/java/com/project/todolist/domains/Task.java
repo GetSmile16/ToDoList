@@ -16,13 +16,14 @@ import java.time.temporal.ChronoUnit;
 @Table(name = "tasks")
 @Builder
 public class Task {
+    private static final int MAX_SYMBOLS = 300;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false)
     @NotBlank(message = "Название не должно быть пустым")
     private String name;
-    @Size(max = 300)
+    @Size(max = MAX_SYMBOLS)
     @Column(nullable = false)
     @NotBlank(message = "Описание не должно быть пустым")
     private String description;
@@ -33,7 +34,7 @@ public class Task {
     private LocalDateTime dateOfDeadline;
     private LocalDateTime dateOfCreated;
 
-    public void init(int days, int hours, int minutes) {
+    public void init(final int days, final int hours, final int minutes) {
         dateOfCreated = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         dateOfDeadline = dateOfCreated
                 .plusDays(days)

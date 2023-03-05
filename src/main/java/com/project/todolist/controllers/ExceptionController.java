@@ -10,9 +10,13 @@ import org.springframework.web.client.HttpClientErrorException;
 @ControllerAdvice
 public class ExceptionController {
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<AppError> httpClientErrorException(HttpClientErrorException ex) {
-        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), ex.getMessage()),
-                HttpStatus.NOT_FOUND);
+    public ResponseEntity<AppError> httpClientErrorException(
+            final HttpClientErrorException ex
+    ) {
+        return new ResponseEntity<>(
+                new AppError(HttpStatus.NOT_FOUND.value(), ex.getMessage()),
+                HttpStatus.NOT_FOUND
+        );
     }
 
 }

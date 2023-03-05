@@ -3,7 +3,7 @@ package com.project.todolist.services;
 import com.project.todolist.domains.Task;
 import com.project.todolist.domains.enums.Status;
 import com.project.todolist.repositories.TaskRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class TaskServiceImpl implements TaskService{
-    private final TaskRepository taskRepository;
+@AllArgsConstructor
+public class TaskServiceImpl implements TaskService {
+
+    private TaskRepository taskRepository;
 
     private static final String ERROR = "Task not found with id ";
 
@@ -32,16 +33,22 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public void delete(long id){
+    public void delete(long id) {
         updateRepo();
         Task task = taskRepository
                 .findById(id)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, ERROR + id));
+                .orElseThrow(
+                        () -> new HttpClientErrorException(
+                                HttpStatus.NOT_FOUND,
+                                ERROR + id
+                        )
+                );
         taskRepository.deleteById(task.getId());
     }
 
     @Override
-    public Task create(Task task, int days, int hours, int minutes) {
+    public Task create(Task task, int days,
+                       int hours, int minutes) {
         updateRepo();
         task.init(days, hours, minutes);
         task.setStatus(Status.IN_PROGRESS);
@@ -49,11 +56,17 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public Task update(long id, Task task, int days, int hours, int minutes){
+    public Task update(long id, Task task, int days,
+                       int hours, int minutes) {
         updateRepo();
         Task updatedTask = taskRepository
                 .findById(id)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, ERROR + id));
+                .orElseThrow(
+                        () -> new HttpClientErrorException(
+                                HttpStatus.NOT_FOUND,
+                                ERROR + id
+                        )
+                );
 
         if (days != 0 || hours != 0 || minutes != 0) {
             updatedTask.setDateOfDeadline(
@@ -73,7 +86,12 @@ public class TaskServiceImpl implements TaskService{
         updateRepo();
         return taskRepository
                 .findById(id)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, ERROR + id));
+                .orElseThrow(
+                        () -> new HttpClientErrorException(
+                                HttpStatus.NOT_FOUND,
+                                ERROR + id
+                        )
+                );
     }
 
     @Override
