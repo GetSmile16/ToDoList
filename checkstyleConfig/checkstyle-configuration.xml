@@ -86,6 +86,11 @@
 
   <module name="TreeWalker">
 
+    <module name="SuppressionXpathSingleFilter">
+      <property name="checks" value="VisibilityModifier"/>
+      <property name="query" value="//*[MODIFIERS//*[@text = 'Data']]/descendant-or-self::node()"/>
+    </module>
+
     <!-- Checks for Naming Conventions.                  -->
     <!-- See https://checkstyle.org/config_naming.html -->
     <module name="ConstantName"/>

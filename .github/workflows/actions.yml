@@ -52,7 +52,7 @@ jobs:
         run: mvn clean compile
 
       - name: Check codestyle
-        run: mvn checkstyle:checkstyle
+        run: mvn checkstyle:check
         
       - name: Run tests
         env:

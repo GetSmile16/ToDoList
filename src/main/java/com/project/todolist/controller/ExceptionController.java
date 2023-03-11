@@ -1,4 +1,4 @@
-package com.project.todolist.controllers;
+package com.project.todolist.controller;
 
 import com.project.todolist.AppError;
 import org.springframework.http.HttpStatus;

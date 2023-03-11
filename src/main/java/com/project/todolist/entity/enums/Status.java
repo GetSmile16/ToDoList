@@ -1,4 +1,4 @@
-package com.project.todolist.domains.enums;
+package com.project.todolist.entity.enums;
 
 public enum Status {
     IN_PROGRESS,
