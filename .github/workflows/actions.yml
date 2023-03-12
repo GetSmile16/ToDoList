@@ -15,7 +15,6 @@ on:
 jobs:
   build-and-test:  
     runs-on: ubuntu-latest
-    working-directory: todolist-backend
     
     services:
       postgres:
@@ -50,12 +49,15 @@ jobs:
           distribution: 'temurin'
           
       - name: Build with Maven
+        working-directory: todolist-backend
         run: mvn clean compile
 
       - name: Check codestyle
+        working-directory: todolist-backend
         run: mvn checkstyle:check
         
       - name: Run tests
+        working-directory: todolist-backend
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/todolist
           SPRING_DATASOURCE_USERNAME: postgres
