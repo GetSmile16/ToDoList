@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { createBrowserHistory } from "history"
+import AddTaskComponent from "./UI/AddTask";
+import FooterComponent from "./components/FooterComponent";
+import HeaderComponent from "./components/HeaderComponent";
+import ListTaskComponent from "./components/ListTaskComponent";
 
 function App() {
+  const history = createBrowserHistory();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <HeaderComponent />
+        <div className="container">
+          <AddTaskComponent/>
+          <Routes>
+            <Route path="/" exact element={<ListTaskComponent history={history} />} />
+            <Route path="/tasks" element={<ListTaskComponent history={history} />} />
+          </Routes>
+        </div>
+        <FooterComponent />
+      </Router>
     </div>
   );
 }
