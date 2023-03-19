@@ -1,13 +1,16 @@
 package com.project.todolist.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.todolist.entity.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -23,10 +26,11 @@ public class Task extends TaskTemplate {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateOfDeadline;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateOfCreated;
-
     public void init() {
-        dateOfCreated = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        dateOfCreated = LocalDateTime.now();
     }
 }

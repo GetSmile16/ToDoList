@@ -1,8 +1,9 @@
 package com.project.todolist.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
@@ -15,6 +16,5 @@ public abstract class TaskTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
     @Column(nullable = false)
-    @NotBlank(message = "Название не должно быть пустым")
     protected String name;
 }

@@ -3,25 +3,27 @@ import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { Form } from 'react-bootstrap';
-import TimeInput from 'react-time-input';
+import { createTaskAction } from '../store/tasks/task.actions';
+import { useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function AddTask() {
     const [show, setShow] = useState(false);
-
     const [name, setName] = useState("");
-
-    const [date, setDate] = useState(new Date());
-
+    const [description, setDescription] = useState("");
+    var data = new Date();
+    const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
     const [hours, setHours] = useState(0);
     const [mins, setMins] = useState(0);
 
     const handleClose = () => setShow(false);
     const handleShow = () => {
-        console.log(name)
         setShow(true);
     }
 
     const handleName = (e) => setName(e.target.value)
+    const handleDescription = (e) => setDescription(e.target.value)
 
     const handleDate = (e) => setDate(e.target.value)
 
@@ -29,22 +31,31 @@ function AddTask() {
 
     const handleMins = (e) => setMins(e.target.value)
 
+    const dispatch = useDispatch();
+
     const save = () => {
-        console.log(date);
-        console.log(date.getFullYear());
-        console.log(date.getMonth());
-        console.log(date.getDate());
+        const curDate = new Date(date);
+        void dispatch(createTaskAction({
+            task: { name, description },
+            time: {
+                day: curDate.getDate(),
+                month: curDate.getMonth() + 1,
+                year: curDate.getFullYear(),
+                hours: Number(hours),
+                minutes: Number(mins)
+            }
+        }));
+        setShow(false);
     }
 
     return (
         <>
             <InputGroup className='mb-3'>
-                <Form.Control placeholder="Название задачи" value={name} onChange={handleName}/>
+                <Form.Control placeholder="Название задачи" value={name} onChange={handleName} />
                 <Button id="button-addon2" variant="primary" onClick={handleShow}>
-                    Создать задачу
+                    <FontAwesomeIcon icon={faPlus} />
                 </Button>
             </InputGroup>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Dialog>
                     <Modal.Header closeButton>
@@ -53,24 +64,24 @@ function AddTask() {
                     <Modal.Body>
                         <InputGroup className='mb-3'>
                             <Form.Control
-                                placeholder="Название задачи" defaultValue={name}
+                                placeholder="Название задачи" value={name} onChange={handleName}
                             />
                         </InputGroup>
                         <InputGroup className='mb-3'>
-                            <Form.Control
-                                placeholder="Описание задачи"
+                            <Form.Control as="textarea"
+                                placeholder="Описание задачи" value={description} onChange={handleDescription}
                             />
                         </InputGroup>
                         <InputGroup className='mb-3'>
                             {/* <Form.Label>Предпологаемая дата окончания</Form.Label> */}
-                            <Form.Control type="date"  value={date} onChange={handleDate}/>
+                            <Form.Control type="date" value={date} onChange={handleDate} />
                         </InputGroup>
                         <InputGroup className='mb-3'>
-                            <Form.Control type='number' placeholder='Часы' min={0} max={24} value={hours} onChange={handleHours}></Form.Control>
-                            <Form.Control type='number' placeholder='Минуты' min={0} max={60} value={mins} onChange={handleMins}></Form.Control>
+                            <Form.Control type='number' placeholder='Часы' min={0} max={23} value={hours} onChange={handleHours}></Form.Control>
+                            <Form.Control type='number' placeholder='Минуты' min={0} max={59} value={mins} onChange={handleMins}></Form.Control>
                         </InputGroup>
                     </Modal.Body>
-                     <Modal.Footer>
+                    <Modal.Footer>
                         <Button variant="primary" onClick={save}>Сохранить</Button>
                     </Modal.Footer>
                 </Modal.Dialog>

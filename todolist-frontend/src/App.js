@@ -1,28 +1,25 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { createBrowserHistory } from "history"
 import AddTaskComponent from "./UI/AddTask";
 import FooterComponent from "./components/FooterComponent";
-import HeaderComponent from "./components/HeaderComponent";
-import ListTaskComponent from "./components/ListTaskComponent";
+import { HeaderComponent } from "./components/HeaderComponent";
+import { ListTaskComponent } from "./components/ListTaskComponent";
+import { Provider } from "react-redux";
+import { Container } from "react-bootstrap"
+import store from "./store";
 
 function App() {
-  const history = createBrowserHistory();
 
   return (
-    <div>
-      <Router>
+    <Container>
+      <Provider store={store}>
         <HeaderComponent />
         <div className="container">
-          <AddTaskComponent/>
-          <Routes>
-            <Route path="/" exact element={<ListTaskComponent history={history} />} />
-            <Route path="/tasks" element={<ListTaskComponent history={history} />} />
-          </Routes>
+          <AddTaskComponent />
+          <ListTaskComponent />
         </div>
         <FooterComponent />
-      </Router>
-    </div>
+      </Provider>
+      </Container>
   );
 }
 

@@ -1,14 +1,12 @@
 package com.project.todolist.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class DeadlineDateTime {
     private int day;
     private int month;
