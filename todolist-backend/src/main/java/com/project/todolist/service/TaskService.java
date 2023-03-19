@@ -11,5 +11,5 @@ public interface TaskService {
     Task update(long id, TaskDto taskDto);
     Task getById(long id);
     List<Task> getAll();
-    void resolve(long id);
+    Task resolve(long id);
 }

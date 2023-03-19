@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteTask, resolveTask } from '../API';
-import { deleteTaskById, resolveTaskById } from '../store/tasks';
-import { getTasksAction } from '../store/tasks/task.actions';
+import { deleteTask } from '../API';
+import { deleteTaskById } from '../store/tasks';
+import { getTasksAction, resolveTaskAction } from '../store/tasks/task.actions';
 import { EditTask } from '../UI/EditTask';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark, faPen } from '@fortawesome/free-solid-svg-icons';
@@ -14,8 +14,6 @@ export const ListTaskComponent = () => {
 
     const [isActive, setIsActive] = useState(false);
     const [id, setId] = useState(null);
-
-    console.log(tasks);
 
     useEffect(() => {
         dispatch(getTasksAction())
@@ -51,7 +49,7 @@ export const ListTaskComponent = () => {
                                         <td>{task.dateOfDeadline}</td>
                                         <td>{task.status}</td>
                                         <td>
-                                            <Button className="mr-1" onClick={() => {
+                                            <Button className="mr-1" disabled={task?.status === 'FAILED' || task?.status === 'RESOLVED'} onClick={() => {
                                                 setIsActive(true);
                                                 setId(task.id);
                                             }}>
@@ -59,17 +57,9 @@ export const ListTaskComponent = () => {
                                             </Button><Button className="mr-1" onClick={() => {
                                                 dispatch(deleteTaskById(task.id));
                                                 deleteTask(task.id);
-                                                console.log(task.id);
                                             }}> <FontAwesomeIcon icon={faXmark} /> </Button>
-                                            <Button className="btn-primary mr-1" onClick={({ task }) => {
-                                                if (task.status === "FAILED") {
-                                                    alert("Задача провалена, изменить не получится");
-                                                }
-                                                if (task.status === "RESOLVED") {
-                                                    alert("Задача решена, изменить не получится");
-                                                }
-                                                resolveTask(task.id);
-                                                dispatch(resolveTaskById(task.id));
+                                            <Button className="btn-primary mr-1" disabled={task?.status === 'FAILED' || task?.status === 'RESOLVED'} onClick={() => {
+                                                dispatch(resolveTaskAction(task.id));
                                             }}> <FontAwesomeIcon icon={faCheck} /> </Button>
                                         </td>
                                     </tr>

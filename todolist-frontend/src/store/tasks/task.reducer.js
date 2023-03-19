@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getTasksAction, getTaskAction, getDailyTaskAction, editTaskAction, createTaskAction } from "./task.actions";
+import { getTasksAction, getTaskAction, getDailyTaskAction, editTaskAction, createTaskAction, resolveTaskAction } from "./task.actions";
 
 const initialState = { tasks: null, task: null, error: null, randomTask: null};
 
@@ -13,13 +13,7 @@ export const tasksSlice=createSlice({name: sliceName, initialState , reducers: {
         state.error = payload;
     },
     deleteTaskById: (state, {payload}) => {
-        const index = state.tasks.findIndex((element) => element.id===payload.id);
-        state.tasks.splice(index, 1);    
-    },
-    resolveTaskById: (state, {payload}) => {
-        const index = state.tasks.findIndex((element) => element.id===payload.id);
-        state.tasks.splice(index, 1);
-        state.tasks=[...state.tasks, payload];    
+        state.tasks = state.tasks.filter((element) => element.id !== payload );  
     }
 }, extraReducers: (builder) => {
     builder
@@ -36,6 +30,11 @@ export const tasksSlice=createSlice({name: sliceName, initialState , reducers: {
             const index = state.tasks.findIndex((element) => element.id===payload.id);
             state.tasks.splice(index, 1);
             state.tasks=[payload, ...state.tasks];
+        })
+        .addCase(resolveTaskAction.fulfilled, (state, {payload}) => {
+            const index = state.tasks.findIndex((element) => element.id===payload.id);
+            state.tasks.splice(index, 1);
+            state.tasks=[...state.tasks, payload];
         })
         .addCase(getDailyTaskAction.fulfilled, (state, {payload}) => {
             state.randomTask=payload;

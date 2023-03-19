@@ -12,8 +12,8 @@ function AddTask() {
     const [show, setShow] = useState(false);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    var data = new Date();
-    const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+    const today = new Date();
+    const [date, setDate] = useState(new Date(today).toISOString().slice(0, 10));
     const [hours, setHours] = useState(0);
     const [mins, setMins] = useState(0);
 
@@ -48,6 +48,8 @@ function AddTask() {
         setShow(false);
     }
 
+    const disabled = new Date(date).getDate() < today.getDate();
+    
     return (
         <>
             <InputGroup className='mb-3'>
@@ -82,7 +84,7 @@ function AddTask() {
                         </InputGroup>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" onClick={save}>Сохранить</Button>
+                        <Button variant="primary" disabled={disabled} onClick={save}>Сохранить</Button>
                     </Modal.Footer>
                 </Modal.Dialog>
             </Modal>

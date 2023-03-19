@@ -25,7 +25,7 @@ export const deleteTask =  async (id) => {
 }
 
 export const resolveTask = async (id) => {
-    axios.put(`${TASKS_URL}/resolve/${id}`);
+    return axios.put(`${TASKS_URL}/resolve/${id}`);
 }
 
 export const getTask = async (id) => {

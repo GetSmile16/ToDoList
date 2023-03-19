@@ -20,6 +20,7 @@ export function EditTask({ isActive, onClose, id }) {
     const [date, setDate] = useState("");
     const [hours, setHours] = useState(0);
     const [mins, setMins] = useState(0);
+    const today = new Date();
 
     useEffect(() => {
         if (task) {
@@ -52,10 +53,10 @@ export function EditTask({ isActive, onClose, id }) {
         setMins(mins);
     }
 
-    const save = (status) => {
+    const save = () => {
         const curDate = new Date(date);
 
-        const task = {
+        const taskEdit = {
             id, item: {
                 task: { name, description },
                 time: {
@@ -68,16 +69,11 @@ export function EditTask({ isActive, onClose, id }) {
             }
         };
 
-        void dispatch(editTaskAction(task));
+        void dispatch(editTaskAction(taskEdit));
         onClose();
-
-        if (task?.status === "FAILED") {
-            alert("Задача провалена, изменить не получится");
-        }
-        if (task?.status === "RESOLVED") {
-            alert("Задача решена, изменить не получится");
-        }
     }
+
+    const disabled = new Date(date).getDate() < today.getDate();
 
     return (
         <Modal show={isActive} onHide={onClose}>
@@ -106,7 +102,7 @@ export function EditTask({ isActive, onClose, id }) {
                     </InputGroup>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={save}>Сохранить</Button>
+                    <Button variant="primary" disabled={disabled} onClick={save}>Сохранить</Button>
                 </Modal.Footer>
             </Modal.Dialog>
         </Modal>

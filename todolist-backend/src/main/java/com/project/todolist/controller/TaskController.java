@@ -31,16 +31,15 @@ public class TaskController {
 
     @CrossOrigin
     @PutMapping("/{id}")
-    public ResponseEntity<Task> editTask(@PathVariable long id,
+    public Task editTask(@PathVariable long id,
                                          @RequestBody TaskDto taskDto) {
-        return ResponseEntity.ok(taskService.update(id, taskDto));
+        return taskService.update(id, taskDto);
     }
 
     @CrossOrigin
     @PutMapping("/resolve/{id}")
-    public ResponseEntity<Task> resolveTask(@PathVariable long id) {
-        taskService.resolve(id);
-        return ResponseEntity.ok().build();
+    public Task resolveTask(@PathVariable long id) {
+        return taskService.resolve(id);
     }
 
     @CrossOrigin

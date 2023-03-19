@@ -25,8 +25,11 @@ public class TaskServiceImpl implements TaskService {
         Iterable<Task> tasks = taskRepository.findAll();
 
         for (Task task : tasks) {
-            if (task.getStatus().equals(Status.IN_PROGRESS)
-                    && LocalDateTime.now().isAfter(task.getDateOfDeadline())) {
+            if (
+                    task.getStatus().equals(Status.IN_PROGRESS)
+                            && task.getDateOfCreated()
+                                    .isAfter(task.getDateOfDeadline())
+            ) {
                 task.setStatus(Status.FAILED);
             }
         }
@@ -54,7 +57,6 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = taskDto.getTask();
 
-        task.setStatus(Status.IN_PROGRESS);
         if (taskDto.getTask().getDateOfCreated() == null) {
             task.init();
         }
@@ -68,6 +70,13 @@ public class TaskServiceImpl implements TaskService {
                 time.getHours(),
                 time.getMinutes()
         ));
+
+        task.setStatus(Status.IN_PROGRESS);
+        if (task.getStatus().equals(Status.IN_PROGRESS)
+                && task.getDateOfCreated().isAfter(task.getDateOfDeadline())) {
+            task.setStatus(Status.FAILED);
+        }
+
         return taskRepository.save(task);
     }
 
@@ -110,7 +119,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void resolve(long id) {
+    public Task resolve(long id) {
         updateRepo();
 
         Task task = taskRepository
@@ -131,7 +140,7 @@ public class TaskServiceImpl implements TaskService {
         }
 
         task.setStatus(Status.RESOLVED);
-        taskRepository.save(task);
+        return taskRepository.save(task);
     }
 
     @Override
