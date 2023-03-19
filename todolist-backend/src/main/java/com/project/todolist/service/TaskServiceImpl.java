@@ -27,7 +27,7 @@ public class TaskServiceImpl implements TaskService {
         for (Task task : tasks) {
             if (
                     task.getStatus().equals(Status.IN_PROGRESS)
-                            && task.getDateOfCreated()
+                            && LocalDateTime.now()
                                     .isAfter(task.getDateOfDeadline())
             ) {
                 task.setStatus(Status.FAILED);
@@ -73,7 +73,7 @@ public class TaskServiceImpl implements TaskService {
 
         task.setStatus(Status.IN_PROGRESS);
         if (task.getStatus().equals(Status.IN_PROGRESS)
-                && task.getDateOfCreated().isAfter(task.getDateOfDeadline())) {
+                && LocalDateTime.now().isAfter(task.getDateOfDeadline())) {
             task.setStatus(Status.FAILED);
         }
 
